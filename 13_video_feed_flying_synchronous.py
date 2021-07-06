@@ -39,23 +39,14 @@ def flight_pattern():
                 up_flag = True
                 tello.move_down(30)
 
-
-print("Create Tello object")
 tello = Tello()
-
-print("Connect to Tello Drone")
 tello.connect()
-
 battery_level = tello.get_battery()
-print(f"Battery Life Percentage: {battery_level}")
+print(battery_level)
 
 time.sleep(2)
 
-print("Turn Video Stream On")
 tello.streamon()
-
-# read a single image from the Tello video feed
-print("Read Tello Image")
 frame_read = tello.get_frame_read()
 
 # create a thread to run the function
