@@ -18,7 +18,7 @@ def findFace(img):
         cv2.circle(img, (cx, cy),10,(0,255,0), 6)
         myFaceListC.append([cx,cy])
         myFaceListArea.append(area)
-        print(myFaceListC)
+        # print(myFaceListC)
     if len(myFaceListArea) != 0:
         i= myFaceListArea.index(max(myFaceListArea))
         return img, [myFaceListC[i],myFaceListArea[i]]
@@ -29,7 +29,8 @@ while True:
     # _, img = cap.read()
     ret, img = cap.read()
     if ret:
-        findFace(img)
+        img, info = findFace(img)
+        print(info[0], " ", info[1])
         cv2.imshow("cam", img)
         if cv2.waitKey(5) & 0xFF == ord('q'):
             break
