@@ -8,7 +8,9 @@ print(battery_level)
 tello.streamon()
 
 w, h = 360, 240
-fbRange = [6200, 6800]
+# fbRange = [6200, 6800]
+fbRange = [35000, 8000]
+
 fb = 0
 
 def findFace(img):
@@ -19,12 +21,17 @@ def findFace(img):
     myFaceListC = []
     myFaceListArea = []
 
+    # center
+    cv2.circle(img, (360//2, 240//2), 6, (0,0,255), 2)
+
     for (x, y, w, h) in faces:
         cv2.rectangle(img, (x,y), (x+w, y+h), (0,0,255), 2)
         cx = x + w // 2
         cy = y + h // 2
         area = w * h
-        cv2.circle(img, (cx, cy),10,(0,255,0), 6)
+        # print("area", area)
+        cv2.circle(img, (cx, cy),6,(0,255,0), 3)
+
         myFaceListC.append([cx,cy])
         myFaceListArea.append(area)
 
@@ -36,20 +43,20 @@ def findFace(img):
 
 while True:
    img = tello.get_frame_read().frame
-   img = cv2.resize(img, (360, 240))
+   img = cv2.resize(img, (360*2, 240*2))
    img, info = findFace(img)
-
+   print('area', info[1])
    # info[1] -> area
    if info[1] > fbRange[0] and info[1] < fbRange[1]:
        fb = 0
    elif info[1] > fbRange[1]:
-       fb = -20
+       fb = -25
    elif info[1] < fbRange[0] and info[1] != 0:
-       fb = 20
+       fb = 25
    if info[0][0] == 0:  # info[0][0] -> x
        speed = 0
        # error = 0
-   print(fb)
+   # print(fb)
    tello.send_rc_control(0, fb, 0, 0)
 
    cv2.imshow('frame',img)
